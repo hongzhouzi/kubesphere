@@ -24,7 +24,7 @@ import (
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/util/sets"
 	"k8s.io/client-go/tools/cache"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 	ctrl "sigs.k8s.io/controller-runtime"
 	runtimeclient "sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
@@ -51,8 +51,6 @@ import (
 	"kubesphere.io/kubesphere/pkg/simple/client/devops/jenkins"
 	ldapclient "kubesphere.io/kubesphere/pkg/simple/client/ldap"
 	"kubesphere.io/kubesphere/pkg/simple/client/s3"
-
-	"kubesphere.io/kubesphere/pkg/controller/storage/snapshotclass"
 
 	iamv1alpha2 "kubesphere.io/api/iam/v1alpha2"
 
@@ -84,23 +82,19 @@ var allControllers = []string{
 	"workspacerole",
 	"workspacerolebinding",
 	"namespace",
-
 	"helmrepo",
 	"helmcategory",
 	"helmapplication",
 	"helmapplicationversion",
 	"helmrelease",
 	"helm",
-
 	"application",
 	"serviceaccount",
 	"resourcequota",
-
 	"virtualservice",
 	"destinationrule",
 	"job",
 	"storagecapability",
-	"volumesnapshot",
 	"pvcautoresizer",
 	"workloadrestart",
 	"loginrecord",
@@ -108,18 +102,18 @@ var allControllers = []string{
 	"nsnp",
 	"ippool",
 	"csr",
-
 	"clusterrolebinding",
-
 	"fedglobalrolecache",
 	"globalrole",
 	"fedglobalrolebindingcache",
 	"globalrolebinding",
-
 	"groupbinding",
 	"group",
-
 	"notification",
+	"pvcworkloadrestarter",
+	"rulegroup",
+	"clusterrulegroup",
+	"globalrulegroup",
 }
 
 // setup all available controllers one by one
@@ -239,13 +233,13 @@ func addAllControllers(mgr manager.Manager, client k8s.Client, informerFactory i
 
 		// "helmapplication" controller
 		if cmOptions.IsControllerEnabled("helmapplication") {
-			reconcileHelmApp := (&helmapplication.ReconcileHelmApplication{})
+			reconcileHelmApp := &helmapplication.ReconcileHelmApplication{}
 			addControllerWithSetup(mgr, "helmapplication", reconcileHelmApp)
 		}
 
 		// "helmapplicationversion" controller
 		if cmOptions.IsControllerEnabled("helmapplicationversion") {
-			reconcileHelmAppVersion := (&helmapplication.ReconcileHelmApplicationVersion{})
+			reconcileHelmAppVersion := &helmapplication.ReconcileHelmApplicationVersion{}
 			addControllerWithSetup(mgr, "helmapplicationversion", reconcileHelmAppVersion)
 		}
 	}
@@ -343,20 +337,10 @@ func addAllControllers(mgr manager.Manager, client k8s.Client, informerFactory i
 		addController(mgr, "storagecapability", storageCapabilityController)
 	}
 
-	// "volumesnapshot" controller
-	if cmOptions.IsControllerEnabled("volumesnapshot") {
-		volumeSnapshotController := snapshotclass.NewController(
-			kubernetesInformer.Storage().V1().StorageClasses(),
-			client.Snapshot().SnapshotV1().VolumeSnapshotClasses(),
-			informerFactory.SnapshotSharedInformerFactory().Snapshot().V1().VolumeSnapshotClasses(),
-		)
-		addController(mgr, "volumesnapshot", volumeSnapshotController)
-	}
-
-	// "pvc-autoresizer"
+	// "pvcautoresizer" controller
 	monitoringOptionsEnable := cmOptions.MonitoringOptions != nil && len(cmOptions.MonitoringOptions.Endpoint) != 0
 	if monitoringOptionsEnable {
-		if cmOptions.IsControllerEnabled("pvc-autoresizer") {
+		if cmOptions.IsControllerEnabled("pvcautoresizer") {
 			if err := runners.SetupIndexer(mgr, false); err != nil {
 				return err
 			}
@@ -367,20 +351,21 @@ func addAllControllers(mgr manager.Manager, client k8s.Client, informerFactory i
 			pvcAutoResizerController := runners.NewPVCAutoresizer(
 				promClient,
 				mgr.GetClient(),
-				ctrl.Log.WithName("pvc-autoresizer"),
+				ctrl.Log.WithName("pvcautoresizer"),
 				1*time.Minute,
-				mgr.GetEventRecorderFor("pvc-autoresizer"),
+				mgr.GetEventRecorderFor("pvcautoresizer"),
 			)
 			addController(mgr, "pvcautoresizer", pvcAutoResizerController)
 		}
 	}
 
-	if cmOptions.IsControllerEnabled("pvc-workload-restarter") {
+	// "pvcworkloadrestarter" controller
+	if cmOptions.IsControllerEnabled("pvcworkloadrestarter") {
 		restarter := runners.NewRestarter(
 			mgr.GetClient(),
-			ctrl.Log.WithName("pvc-workload-restarter"),
+			ctrl.Log.WithName("pvcworkloadrestarter"),
 			1*time.Minute,
-			mgr.GetEventRecorderFor("pvc-workload-restarter"),
+			mgr.GetEventRecorderFor("pvcworkloadrestarter"),
 		)
 		addController(mgr, "pvcworkloadrestarter", restarter)
 	}

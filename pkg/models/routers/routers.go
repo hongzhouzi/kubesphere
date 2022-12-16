@@ -19,7 +19,7 @@ package routers
 import (
 	"context"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"sort"
 	"strings"
 
@@ -32,7 +32,7 @@ import (
 	"k8s.io/client-go/informers"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/kubernetes/scheme"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 )
 
 // choose router node ip by labels, currently select master node
@@ -170,7 +170,7 @@ func (c *routerOperator) getRouterService(namespace string) (*corev1.Service, er
 // Load all resource yamls
 func loadYamls() ([]string, error) {
 	var yamls []string
-	files, err := ioutil.ReadDir(ingressControllerFolder)
+	files, err := os.ReadDir(ingressControllerFolder)
 	if err != nil {
 		klog.Warning(err)
 		return nil, err
@@ -180,7 +180,7 @@ func loadYamls() ([]string, error) {
 		if file.IsDir() || !strings.HasSuffix(file.Name(), ".yaml") {
 			continue
 		}
-		content, err := ioutil.ReadFile(ingressControllerFolder + "/" + file.Name())
+		content, err := os.ReadFile(ingressControllerFolder + "/" + file.Name())
 
 		if err != nil {
 			klog.Error(err)

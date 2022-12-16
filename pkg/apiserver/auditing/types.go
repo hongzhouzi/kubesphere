@@ -21,7 +21,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net"
 	"net/http"
 	"time"
@@ -32,7 +32,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apiserver/pkg/apis/audit"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 	devopsv1alpha3 "kubesphere.io/api/devops/v1alpha3"
 	"kubesphere.io/api/iam/v1alpha2"
 
@@ -116,7 +116,6 @@ func (a *auditing) K8sAuditingEnabled() bool {
 //		info.Verb = "post"
 //		info.Name = created.Name
 //	}
-//
 func (a *auditing) LogRequestObject(req *http.Request, info *request.RequestInfo) *auditv1alpha1.Event {
 
 	// Ignore the dryRun k8s request.
@@ -190,13 +189,13 @@ func (a *auditing) LogRequestObject(req *http.Request, info *request.RequestInfo
 	}
 
 	if a.needAnalyzeRequestBody(e, req) {
-		body, err := ioutil.ReadAll(req.Body)
+		body, err := io.ReadAll(req.Body)
 		if err != nil {
 			klog.Error(err)
 			return e
 		}
 		_ = req.Body.Close()
-		req.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+		req.Body = io.NopCloser(bytes.NewBuffer(body))
 
 		if e.Level.GreaterOrEqual(audit.LevelRequest) {
 			e.RequestObject = &runtime.Unknown{Raw: body}

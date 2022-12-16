@@ -16,12 +16,12 @@
 package v2beta2
 
 import (
-	"io/ioutil"
+	"io"
 
 	"github.com/emicklei/go-restful"
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/client-go/kubernetes"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 
 	"kubesphere.io/kubesphere/pkg/api"
 	"kubesphere.io/kubesphere/pkg/apiserver/query"
@@ -131,7 +131,7 @@ func (h *handler) PatchResource(req *restful.Request, resp *restful.Response) {
 		return
 	}
 
-	data, err := ioutil.ReadAll(req.Request.Body)
+	data, err := io.ReadAll(req.Request.Body)
 	if err != nil {
 		api.HandleBadRequest(resp, req, err)
 		return

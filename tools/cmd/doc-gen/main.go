@@ -20,8 +20,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"log"
+	"os"
 
 	restfulspec "github.com/emicklei/go-restful-openapi"
 	"github.com/go-openapi/loads"
@@ -31,7 +31,7 @@ import (
 	"github.com/pkg/errors"
 	promfake "github.com/prometheus-operator/prometheus-operator/pkg/client/versioned/fake"
 	urlruntime "k8s.io/apimachinery/pkg/util/runtime"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 
 	"kubesphere.io/kubesphere/pkg/apiserver/runtime"
 	"kubesphere.io/kubesphere/pkg/client/clientset/versioned/fake"
@@ -255,7 +255,7 @@ func generateSwaggerJson() []byte {
 	})
 
 	data, _ := json.MarshalIndent(swagger, "", "  ")
-	err := ioutil.WriteFile(output, data, 0644)
+	err := os.WriteFile(output, data, 0644)
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -17,12 +17,12 @@ limitations under the License.
 package helm
 
 import (
-	"io/ioutil"
+	"os"
 	"path/filepath"
 	"testing"
 
 	"k8s.io/client-go/rest"
-	"k8s.io/klog/klogr"
+	"k8s.io/klog/v2"
 	ctrl "sigs.k8s.io/controller-runtime"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 
@@ -48,7 +48,7 @@ func TestApplicationController(t *testing.T) {
 }
 
 var _ = BeforeSuite(func(done Done) {
-	logf.SetLogger(klogr.New())
+	logf.SetLogger(klog.NewKlogr())
 
 	By("bootstrapping test environment")
 	testEnv = &envtest.Environment{
@@ -73,8 +73,8 @@ var _ = Context("Helm reconcier", func() {
 	Describe("Gateway", func() {
 		It("Should setup gateway helm reconcier", func() {
 			data := "- group: gateway.kubesphere.io\n  version: v1alpha1\n  kind: Gateway\n  chart: ../../../config/gateway\n"
-			f, _ := ioutil.TempFile("", "watch")
-			ioutil.WriteFile(f.Name(), []byte(data), 0)
+			f, _ := os.CreateTemp("", "watch")
+			os.WriteFile(f.Name(), []byte(data), 0)
 
 			mgr, err := ctrl.NewManager(cfg, ctrl.Options{MetricsBindAddress: "0"})
 			Expect(err).NotTo(HaveOccurred(), "failed to create a manager")

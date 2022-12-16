@@ -21,13 +21,13 @@ import (
 	"crypto/x509"
 	"encoding/base64"
 	"fmt"
-	"io/ioutil"
+	"os"
 	"time"
 
 	"github.com/go-ldap/ldap"
 	"github.com/mitchellh/mapstructure"
 	"k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 
 	"kubesphere.io/kubesphere/pkg/apiserver/authentication/identityprovider"
 	"kubesphere.io/kubesphere/pkg/apiserver/authentication/oauth"
@@ -186,7 +186,7 @@ func (l *ldapProvider) newConn() (*ldap.Conn, error) {
 	var err error
 	// Load CA cert
 	if l.RootCA != "" {
-		if caCert, err = ioutil.ReadFile(l.RootCA); err != nil {
+		if caCert, err = os.ReadFile(l.RootCA); err != nil {
 			klog.Error(err)
 			return nil, err
 		}

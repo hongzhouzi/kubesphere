@@ -25,13 +25,13 @@ import (
 	"errors"
 	"fmt"
 	"hash/fnv"
-	"io/ioutil"
+	"os"
 	"time"
 
 	"gopkg.in/square/go-jose.v2"
 
 	"github.com/form3tech-oss/jwt-go"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 
 	"kubesphere.io/kubesphere/pkg/apiserver/authentication"
 
@@ -264,7 +264,7 @@ func loadSignKey(options *authentication.Options) (*rsa.PrivateKey, string, erro
 	var err error
 
 	if options.OAuthOptions.SignKey != "" {
-		signKeyData, err = ioutil.ReadFile(options.OAuthOptions.SignKey)
+		signKeyData, err = os.ReadFile(options.OAuthOptions.SignKey)
 		if err != nil {
 			klog.Errorf("issuer: failed to read private key file %s: %v", options.OAuthOptions.SignKey, err)
 			return nil, "", err

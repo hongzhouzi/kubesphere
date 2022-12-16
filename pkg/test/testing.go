@@ -20,13 +20,13 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"io/ioutil"
+	"os"
 	"strconv"
 	"strings"
 	"testing"
 	"time"
 
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 
 	"github.com/prometheus/common/log"
 	appsv1 "k8s.io/api/apps/v1"
@@ -107,7 +107,7 @@ func (t *TestCtx) Setup(yamlPath string, crdPath string, schemes ...AddToSchemeF
 	if err != nil {
 		return err
 	}
-	bytes, err := ioutil.ReadFile(yamlPath)
+	bytes, err := os.ReadFile(yamlPath)
 	if err != nil {
 		klog.Errorln("Failed to read yaml file")
 		return err

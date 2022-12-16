@@ -22,18 +22,18 @@ import (
 	"reflect"
 	"sync"
 
-	corev1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
 	"k8s.io/client-go/tools/clientcmd"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 
 	clusterv1alpha1 "kubesphere.io/api/cluster/v1alpha1"
 
 	kubesphere "kubesphere.io/kubesphere/pkg/client/clientset/versioned"
 	clusterinformer "kubesphere.io/kubesphere/pkg/client/informers/externalversions/cluster/v1alpha1"
 	clusterlister "kubesphere.io/kubesphere/pkg/client/listers/cluster/v1alpha1"
+	clusterutils "kubesphere.io/kubesphere/pkg/controller/cluster/utils"
 )
 
 type innerCluster struct {
@@ -172,12 +172,7 @@ func (c *clusterClients) GetInnerCluster(name string) *innerCluster {
 }
 
 func (c *clusterClients) IsClusterReady(cluster *clusterv1alpha1.Cluster) bool {
-	for _, condition := range cluster.Status.Conditions {
-		if condition.Type == clusterv1alpha1.ClusterReady && condition.Status == corev1.ConditionTrue {
-			return true
-		}
-	}
-	return false
+	return clusterutils.IsClusterReady(cluster)
 }
 
 func (c *clusterClients) IsHostCluster(cluster *clusterv1alpha1.Cluster) bool {

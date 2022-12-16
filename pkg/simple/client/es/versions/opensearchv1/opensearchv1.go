@@ -22,7 +22,7 @@ import (
 	"crypto/tls"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"time"
 
@@ -64,6 +64,7 @@ func (o *OpenSearch) Search(indices string, body []byte, scroll bool) ([]byte, e
 	opts := []func(*opensearchapi.SearchRequest){
 		o.client.Search.WithContext(context.Background()),
 		o.client.Search.WithIndex(indices),
+		o.client.Search.WithRestTotalHitsAsInt(true),
 		o.client.Search.WithIgnoreUnavailable(true),
 		o.client.Search.WithBody(bytes.NewBuffer(body)),
 	}
@@ -81,7 +82,7 @@ func (o *OpenSearch) Search(indices string, body []byte, scroll bool) ([]byte, e
 		return nil, parseError(response)
 	}
 
-	return ioutil.ReadAll(response.Body)
+	return io.ReadAll(response.Body)
 }
 
 func (o *OpenSearch) Scroll(id string) ([]byte, error) {
@@ -98,7 +99,7 @@ func (o *OpenSearch) Scroll(id string) ([]byte, error) {
 		return nil, parseError(response)
 	}
 
-	return ioutil.ReadAll(response.Body)
+	return io.ReadAll(response.Body)
 }
 
 func (o *OpenSearch) ClearScroll(scrollId string) {

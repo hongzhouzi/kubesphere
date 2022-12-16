@@ -16,7 +16,7 @@ package v1
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"math"
 	"net/url"
 	"strconv"
@@ -30,7 +30,7 @@ import (
 	"google.golang.org/grpc/status"
 	apierrors "k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/klog"
+	"k8s.io/klog/v2"
 
 	"kubesphere.io/api/application/v1alpha1"
 
@@ -987,7 +987,7 @@ func (h *openpitrixHandler) CreateAttachment(req *restful.Request, resp *restful
 			api.HandleBadRequest(resp, nil, err)
 			return
 		}
-		data, _ := ioutil.ReadAll(f)
+		data, _ := io.ReadAll(f)
 		f.Close()
 
 		att, err = h.openpitrix.CreateAttachment(data)
