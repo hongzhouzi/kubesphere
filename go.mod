@@ -975,7 +975,7 @@ replace (
 	go.elastic.co/apm/module/apmot => go.elastic.co/apm/module/apmot v1.5.0
 	go.elastic.co/fastjson => go.elastic.co/fastjson v1.0.0
 	go.etcd.io/bbolt => go.etcd.io/bbolt v1.3.3
-	go.etcd.io/etcd => go.etcd.io/etcd v0.5.0-alpha.5.0.20200910180754-dd1b699fc489
+	go.etcd.io/etcd => go.etcd.io/etcd v0.5.0-alpha.5.0.20200520232829-54ba9589114f
 	go.etcd.io/etcd/api/v3 => go.etcd.io/etcd/api/v3 v3.5.4
 	go.etcd.io/etcd/client/pkg/v3 => go.etcd.io/etcd/client/pkg/v3 v3.5.4
 	go.etcd.io/etcd/client/v2 => go.etcd.io/etcd/client/v2 v2.305.4

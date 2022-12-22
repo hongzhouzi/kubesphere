@@ -246,7 +246,6 @@ replace (
 	github.com/onsi/gomega => github.com/onsi/gomega v1.10.1
 	github.com/opencontainers/image-spec => github.com/opencontainers/image-spec v1.0.1
 	github.com/opencontainers/runtime-spec => github.com/opencontainers/runtime-spec v1.0.2
-	github.com/opencontainers/selinux => github.com/opencontainers/selinux v1.10.0
 	github.com/pelletier/go-toml => github.com/pelletier/go-toml v1.7.0
 	github.com/phayes/freeport => github.com/phayes/freeport v0.0.0-20171002181615-b8543db493a5
 	github.com/pquerna/cachecontrol => github.com/pquerna/cachecontrol v0.0.0-20171018203845-0dec1b30a021
