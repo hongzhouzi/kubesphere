@@ -133,7 +133,7 @@ require (
 	github.com/containerd/containerd v1.6.18 // indirect
 	github.com/coreos/go-semver v0.3.1 // indirect
 	github.com/coreos/go-systemd/v22 v22.4.0 // indirect
-	github.com/cyphar/filepath-securejoin v0.2.3 // indirect
+	github.com/cyphar/filepath-securejoin v0.2.4 // indirect
 	github.com/deckarep/golang-set v1.8.0 // indirect
 	github.com/dennwc/varint v1.0.0 // indirect
 	github.com/docker/cli v20.10.22+incompatible // indirect
@@ -324,7 +324,7 @@ replace (
 	github.com/containerd/containerd => github.com/containerd/containerd v1.6.18
 	github.com/containernetworking/cni => github.com/containernetworking/cni v1.1.2
 	github.com/coreos/go-oidc => github.com/coreos/go-oidc v2.1.0+incompatible
-	github.com/cyphar/filepath-securejoin => github.com/cyphar/filepath-securejoin v0.2.3
+	github.com/cyphar/filepath-securejoin => github.com/cyphar/filepath-securejoin v0.2.4
 	github.com/davecgh/go-spew => github.com/davecgh/go-spew v1.1.1
 	github.com/docker/cli => github.com/docker/cli v20.10.22+incompatible
 	github.com/docker/distribution => github.com/docker/distribution v2.8.2+incompatible
