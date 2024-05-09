@@ -2,12 +2,14 @@
 
 module kubesphere.io/client-go
 
-go 1.19
+go 1.21
+
+toolchain go1.21.7
 
 require (
 	github.com/go-resty/resty/v2 v2.5.0
-	k8s.io/apimachinery v0.26.2
-	k8s.io/client-go v0.26.2
+	k8s.io/apimachinery v0.29.0
+	k8s.io/client-go v0.29.0
 	sigs.k8s.io/controller-runtime v0.14.4
 )
 
@@ -48,22 +50,28 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.26.2 // indirect
-	k8s.io/klog/v2 v2.90.1 // indirect
-	k8s.io/kube-openapi v0.0.0-20230224204730-66828de6f33b // indirect
-	k8s.io/utils v0.0.0-20230220204549-a5ecb0141aa5 // indirect
+	k8s.io/api v0.29.0 // indirect
+	k8s.io/apiextensions-apiserver v0.29.0 // indirect
+	k8s.io/klog/v2 v2.110.1 // indirect
+	k8s.io/kube-openapi v0.0.0-20231010175941-2dd684a91f00 // indirect
+	k8s.io/utils v0.0.0-20230726121419-3b25d923346b // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
-	sigs.k8s.io/structured-merge-diff/v4 v4.2.3 // indirect
+	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 	sigs.k8s.io/yaml v1.3.0 // indirect
 )
 
 replace (
+	github.com/BurntSushi/toml => github.com/BurntSushi/toml v1.2.1
+	github.com/evanphx/json-patch => github.com/evanphx/json-patch v5.6.0+incompatible
 	github.com/go-logr/logr => github.com/go-logr/logr v1.2.3
 	github.com/golang/glog => github.com/golang/glog v1.0.0
 	github.com/golang/protobuf => github.com/golang/protobuf v1.5.2
 	github.com/google/go-cmp => github.com/google/go-cmp v0.5.9
 	github.com/imdario/mergo => github.com/imdario/mergo v0.3.12
 	github.com/onsi/gomega => github.com/onsi/gomega v1.27.1
+	github.com/prometheus/common => github.com/prometheus/common v0.39.0
+	github.com/sirupsen/logrus => github.com/sirupsen/logrus v1.9.0
+	github.com/spf13/cobra => github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify => github.com/stretchr/testify v1.8.1
 	golang.org/x/crypto => golang.org/x/crypto v0.5.0
 	golang.org/x/oauth2 => golang.org/x/oauth2 v0.4.0
@@ -74,9 +82,12 @@ replace (
 	google.golang.org/genproto => google.golang.org/genproto v0.0.0-20230124163310-31e0e69b6fc2
 	google.golang.org/grpc => google.golang.org/grpc v1.56.3
 	k8s.io/api => k8s.io/api v0.26.1
+	k8s.io/apiextensions-apiserver => k8s.io/apiextensions-apiserver v0.26.1
 	k8s.io/apimachinery => k8s.io/apimachinery v0.26.1
 	k8s.io/client-go => k8s.io/client-go v0.26.1
 	k8s.io/klog/v2 => k8s.io/klog/v2 v2.90.0
+	k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20230224204730-66828de6f33b
 	k8s.io/utils => k8s.io/utils v0.0.0-20230202215443-34013725500c
 	kubesphere.io/client-go => ../client-go
+	sigs.k8s.io/structured-merge-diff/v4 => sigs.k8s.io/structured-merge-diff/v4 v4.2.3
 )
